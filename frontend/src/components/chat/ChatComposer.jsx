@@ -78,7 +78,7 @@ export function ChatComposer() {
         <TextArea
           fullWidth
           variant="secondary"
-          placeholder="iMessage"
+          placeholder="Є-Message"
           rows={1}
           value={composerText}
           onChange={handleComposerTextChange}
@@ -91,7 +91,12 @@ export function ChatComposer() {
           className="flex-1 rounded-full"
         />
 
-        <Button variant="primary" isIconOnly isDisabled={!composerText.trim()} onPress={handleSend}>
+        <Button
+          variant="primary"
+          isIconOnly
+          isDisabled={!composerText.trim()}
+          onPress={handleSend}
+        >
           <SendHorizontalIcon className="size-5" />
         </Button>
       </div>

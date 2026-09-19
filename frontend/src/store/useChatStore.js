@@ -29,7 +29,8 @@ export const useChatStore = create(
           set((state) => ({
             users: res.data,
             selectedUser:
-              state.selectedUser && res.data.some((user) => user._id === state.selectedUser._id)
+              state.selectedUser &&
+              res.data.some((user) => user._id === state.selectedUser._id)
                 ? state.selectedUser
                 : null,
           }));
@@ -59,7 +60,9 @@ export const useChatStore = create(
           const res = await axiosInstance.get(`/messages/${userId}`);
           set({ messages: res.data });
         } catch (error) {
-          toast.error(error.response?.data?.message || "Failed to load messages");
+          toast.error(
+            error.response?.data?.message || "Failed to load messages",
+          );
         } finally {
           set({ isMessagesLoading: false });
         }
@@ -70,12 +73,17 @@ export const useChatStore = create(
         if (!selectedUser) return false;
 
         try {
-          const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
+          const res = await axiosInstance.post(
+            `/messages/send/${selectedUser._id}`,
+            messageData,
+          );
           set({ messages: [...messages, res.data], composerText: "" });
           get().getConversations();
           return true;
         } catch (error) {
-          toast.error(error.response?.data?.message || "Failed to send message");
+          toast.error(
+            error.response?.data?.message || "Failed to send message",
+          );
           return false;
         }
       },
@@ -109,7 +117,9 @@ export const useChatStore = create(
           activeConversationId,
           selectedUser:
             state.users.find((user) => user._id === activeConversationId) ||
-            state.conversations.find((user) => user._id === activeConversationId) ||
+            state.conversations.find(
+              (user) => user._id === activeConversationId,
+            ) ||
             null,
           messages: activeConversationId ? state.messages : [],
         }));
@@ -142,7 +152,7 @@ export const useChatStore = create(
       },
     }),
     {
-      name: "imessage-storage",
+      name: "e-message-storage",
       partialize: (state) => ({ isSoundEnabled: state.isSoundEnabled }),
     },
   ),
