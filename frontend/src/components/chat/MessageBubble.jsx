@@ -1,8 +1,21 @@
+import { PauseIcon, PlayIcon } from "lucide-react";
+import { useRef, useState } from "react";
 import { withTransform } from "../../lib/imagekit";
 import { MessageVideo } from "./MessageVideo";
 
 // Compress + size images for the bubble (q-auto works for images; f-auto picks WebP/AVIF).
 const IMAGE_TRANSFORM = "q-auto,w-640,f-auto";
+const WAVE_SAMPLES = [
+  8, 12, 14, 18, 12, 10, 16, 14, 8, 20, 10, 14, 16, 18, 10, 9, 12, 16, 18, 12,
+  14, 10, 8, 15, 18, 12, 10, 11, 14, 16, 10, 8,
+];
+
+function formatAudioDuration(seconds) {
+  if (!Number.isFinite(seconds) || seconds <= 0) return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
 
 export function MessageBubble({ message }) {
   const isOwnMessage = message.role === "me";
@@ -10,6 +23,30 @@ export function MessageBubble({ message }) {
   const hasGif = Boolean(message.gifUrl);
   const hasAudio = Boolean(message.audioUrl);
   const hasVideo = Boolean(message.videoUrl);
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audioDuration, setAudioDuration] = useState(15);
+
+  const handleAudioToggle = async () => {
+    if (!audioRef.current) return;
+
+    if (audioRef.current.paused) {
+      await audioRef.current.play();
+      setIsPlaying(true);
+      return;
+    }
+
+    audioRef.current.pause();
+    setIsPlaying(false);
+  };
+
+  const handleAudioMetadata = () => {
+    if (!audioRef.current) return;
+    const duration = Number(audioRef.current.duration);
+    if (Number.isFinite(duration) && duration > 0) {
+      setAudioDuration(duration);
+    }
+  };
 
   return (
     <div
@@ -37,11 +74,70 @@ export function MessageBubble({ message }) {
           />
         ) : null}
         {hasAudio ? (
-          <audio
-            controls
-            src={message.audioUrl}
-            className="mb-1.5 w-full max-w-64"
-          />
+          <div
+            className={`mb-1.5 flex w-full max-w-[17rem] items-center gap-3 rounded-[18px] px-2 py-2 ${
+              isOwnMessage ? "bg-accent" : "bg-surface"
+            }`}
+          >
+            <button
+              type="button"
+              onClick={handleAudioToggle}
+              className={`flex size-7 items-center justify-center rounded-full text-[10px] ${
+                isOwnMessage
+                  ? "bg-white/18 text-white"
+                  : "bg-[#1f9cff]/10 text-[#1f9cff]"
+              }`}
+              aria-label={
+                isPlaying ? "Pause voice message" : "Play voice message"
+              }
+            >
+              {isPlaying ? (
+                <PauseIcon
+                  className="size-3.5 fill-current"
+                  strokeWidth={2.5}
+                />
+              ) : (
+                <PlayIcon
+                  className="ml-0.5 size-3.5 fill-current"
+                  strokeWidth={2.5}
+                />
+              )}
+            </button>
+
+            <div className="flex flex-1 items-end justify-center gap-[3px]">
+              {WAVE_SAMPLES.map((height, index) => (
+                <span
+                  key={`${message.id || index}-bar`}
+                  className={`inline-block rounded-full ${
+                    isOwnMessage ? "bg-white/80" : "bg-[#1f9cff]"
+                  }`}
+                  style={{
+                    height: `${height}px`,
+                    width: index % 2 === 0 ? "3px" : "2.5px",
+                    opacity: index % 3 === 0 ? 0.8 : 0.65,
+                  }}
+                />
+              ))}
+            </div>
+
+            <span
+              className={`min-w-8 text-[11px] font-medium tabular-nums ${
+                isOwnMessage ? "text-accent-foreground/80" : "text-muted"
+              }`}
+            >
+              {formatAudioDuration(audioDuration)}
+            </span>
+
+            <audio
+              ref={audioRef}
+              src={message.audioUrl}
+              onLoadedMetadata={handleAudioMetadata}
+              onEnded={() => setIsPlaying(false)}
+              onPause={() => setIsPlaying(false)}
+              preload="metadata"
+              className="hidden"
+            />
+          </div>
         ) : null}
         {hasVideo ? <MessageVideo src={message.videoUrl} /> : null}
         {message.text ? (
