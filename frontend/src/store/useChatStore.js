@@ -130,6 +130,66 @@ export const useChatStore = create(
       setComposerText: (composerText) => set({ composerText }),
       setSoundEnabled: (isSoundEnabled) => set({ isSoundEnabled }),
 
+      reactToMessage: (messageId, emoji) => {
+        set((state) => ({
+          messages: state.messages.map((message) => {
+            if (String(message._id) !== String(messageId)) return message;
+
+            const existingReaction = (message.reactions || []).find(
+              (reaction) => reaction.emoji === emoji,
+            );
+
+            if (existingReaction) {
+              const alreadyReacted = (existingReaction.users || []).some(
+                (userId) =>
+                  String(userId) ===
+                  String(useAuthStore.getState().authUser?._id),
+              );
+
+              return {
+                ...message,
+                reactions: (message.reactions || []).map((reaction) => {
+                  if (reaction.emoji !== emoji) return reaction;
+
+                  const users = (reaction.users || []).filter(
+                    (userId) =>
+                      String(userId) !==
+                      String(useAuthStore.getState().authUser?._id),
+                  );
+
+                  return {
+                    ...reaction,
+                    users: alreadyReacted
+                      ? users
+                      : [
+                          ...users,
+                          useAuthStore.getState().authUser?._id,
+                        ].filter(Boolean),
+                    count: alreadyReacted
+                      ? Math.max((reaction.count || 0) - 1, 0)
+                      : (reaction.count || 0) + 1,
+                  };
+                }),
+              };
+            }
+
+            return {
+              ...message,
+              reactions: [
+                ...(message.reactions || []),
+                {
+                  emoji,
+                  count: 1,
+                  users: [useAuthStore.getState().authUser?._id].filter(
+                    Boolean,
+                  ),
+                },
+              ],
+            };
+          }),
+        }));
+      },
+
       sendTextMessage: async (conversationId) => {
         const messageText = get().composerText.trim();
         if (!conversationId || !messageText) return false;

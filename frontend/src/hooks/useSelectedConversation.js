@@ -28,6 +28,7 @@ function mapUserToConversation({ user, messages, authUser, onlineUsers }) {
     gifUrl: message.gif,
     audioUrl: message.audio,
     videoUrl: message.video,
+    reactions: message.reactions || [],
   }));
 
   return {
