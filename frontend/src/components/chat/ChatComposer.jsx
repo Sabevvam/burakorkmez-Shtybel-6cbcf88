@@ -59,7 +59,7 @@ export function ChatComposer() {
         <input
           ref={mediaInputRef}
           type="file"
-          accept="image/*,video/*"
+          accept="image/*,video/*,.gif"
           className="sr-only"
           disabled={isSendingMedia}
           tabIndex={-1}

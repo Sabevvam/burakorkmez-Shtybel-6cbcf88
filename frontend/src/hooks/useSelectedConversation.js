@@ -25,6 +25,7 @@ function mapUserToConversation({ user, messages, authUser, onlineUsers }) {
     text: message.text || "",
     time: formatMessageTime(message.createdAt),
     imageUrl: message.image,
+    gifUrl: message.gif,
     videoUrl: message.video,
   }));
 
@@ -42,7 +43,9 @@ function mapUserToConversation({ user, messages, authUser, onlineUsers }) {
 }
 
 export function useSelectedConversation() {
-  const activeConversationId = useChatStore((state) => state.activeConversationId);
+  const activeConversationId = useChatStore(
+    (state) => state.activeConversationId,
+  );
   const conversations = useChatStore((state) => state.conversations);
   const users = useChatStore((state) => state.users);
   const messages = useChatStore((state) => state.messages);
@@ -58,7 +61,12 @@ export function useSelectedConversation() {
     : null;
 
   const activeConversation = selectedUser
-    ? mapUserToConversation({ user: selectedUser, messages, authUser, onlineUsers })
+    ? mapUserToConversation({
+        user: selectedUser,
+        messages,
+        authUser,
+        onlineUsers,
+      })
     : null;
 
   return {
