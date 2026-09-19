@@ -24,7 +24,7 @@ export function AuthActionPanel() {
   const clerk = useClerk();
 
   return (
-    <section className="relative flex flex-1 flex-col items-stretch justify-center overflow-hidden px-5 py-12 sm:px-10 md:px-14 md:py-10 lg:px-16">
+    <section className="relative flex flex-1 flex-col items-stretch justify-center overflow-hidden px-4 py-6 sm:px-8 sm:py-8 md:px-14 md:py-8 lg:px-16">
       <AuthCardShell>
         <div className="mb-8 flex flex-col items-center text-center">
           <div className="relative mb-5">
@@ -52,7 +52,10 @@ export function AuthActionPanel() {
             variant="primary"
             className={continueButtonClassName}
             onPress={() => {
-              clerk.openSignIn({ fallbackRedirectUrl: AFTER_AUTH, forceRedirectUrl: AFTER_AUTH });
+              clerk.openSignIn({
+                fallbackRedirectUrl: AFTER_AUTH,
+                forceRedirectUrl: AFTER_AUTH,
+              });
             }}
           >
             <span className="relative z-1 flex items-center justify-center gap-2">

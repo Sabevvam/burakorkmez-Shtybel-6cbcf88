@@ -197,7 +197,13 @@ function ChatSidebar() {
                       <span className="truncate text-sm font-medium">
                         {user.name}
                       </span>
-                      <span className="text-xs">{checked ? "✓" : "+"}</span>
+
+                      <span className="flex items-center gap-1.5 text-xs font-medium">
+                        <span className="rounded-full border border-current px-1.5 py-0.5">
+                          {checked ? "Added" : "Add"}
+                        </span>
+                        <span>{checked ? "✓" : "+"}</span>
+                      </span>
                     </button>
                   );
                 })}

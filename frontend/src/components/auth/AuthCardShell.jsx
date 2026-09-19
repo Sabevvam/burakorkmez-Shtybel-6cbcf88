@@ -29,7 +29,9 @@ export function AuthCardShell({ children }) {
             className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/35 to-transparent dark:via-accent/40"
           />
 
-          <div className="relative px-8 pb-9 pt-10 sm:px-10 sm:pb-10 sm:pt-11">{children}</div>
+          <div className="relative px-5 pb-7 pt-8 sm:px-8 sm:pb-9 sm:pt-9 md:px-8 md:pb-9 md:pt-10">
+            {children}
+          </div>
         </div>
       </div>
     </div>
