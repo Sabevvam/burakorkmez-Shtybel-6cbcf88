@@ -69,7 +69,7 @@ export function MessageBubble({ message }) {
         }`}
       >
         {showReactions ? (
-          <div className="absolute -top-11 left-0 z-20 flex items-center gap-1 rounded-full border border-white/20 bg-white/90 p-1 shadow-lg backdrop-blur-sm">
+          <div className="absolute -top-11 right-2 z-20 flex items-center gap-1 rounded-full border border-white/20 bg-white/90 p-1 shadow-lg backdrop-blur-sm">
             {REACTION_OPTIONS.map((emoji) => (
               <button
                 key={emoji}
@@ -170,18 +170,14 @@ export function MessageBubble({ message }) {
         ) : null}
 
         {reactions.length > 0 ? (
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="absolute -bottom-3 right-2 z-10 flex items-center gap-1 rounded-full border border-white/30 bg-white/90 p-1 shadow-md backdrop-blur-sm">
             {reactions.map((reaction) => (
               <div
                 key={reaction.emoji}
-                className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[11px] ${
-                  isOwnMessage
-                    ? "border-white/15 bg-white/10 text-white"
-                    : "border-slate-200 bg-white text-slate-700"
-                }`}
+                className="inline-flex items-center gap-1 rounded-full bg-white px-1.5 py-0.5 text-[11px] text-slate-700"
               >
                 <span>{reaction.emoji}</span>
-                <span>{reaction.count || 0}</span>
+                <span className="font-medium">{reaction.count || 0}</span>
               </div>
             ))}
           </div>
