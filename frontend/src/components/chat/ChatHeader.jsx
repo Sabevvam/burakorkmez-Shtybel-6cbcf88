@@ -13,29 +13,33 @@ import { useSelectedConversation } from "../../hooks/useSelectedConversation";
 
 export function ChatHeader() {
   const isSoundEnabled = useChatStore((state) => state.isSoundEnabled);
-  const setActiveConversationId = useChatStore((state) => state.setActiveConversationId);
+  const setActiveConversationId = useChatStore(
+    (state) => state.setActiveConversationId,
+  );
   const setSoundEnabled = useChatStore((state) => state.setSoundEnabled);
 
   const { activeConversation, isLargeScreen } = useSelectedConversation();
 
   return (
-    <header className="sticky top-0 z-10 flex shrink-0 flex-wrap items-center gap-1 border-b border-border px-1.5 py-1.5 sm:gap-2 sm:px-2 sm:py-2">
+    <header className="sticky top-0 z-10 flex shrink-0 items-center gap-1.5 border-b border-border bg-background/85 px-2 py-2 backdrop-blur-sm sm:gap-2 sm:px-3">
       {activeConversation && !isLargeScreen ? (
         <Button
           variant="ghost"
           size="sm"
           isIconOnly
-          className="shrink-0"
+          className="shrink-0 rounded-full touch-manipulation"
           onPress={() => setActiveConversationId(null)}
         >
-          <ChevronLeftIcon className="size-6" strokeWidth={2.25} />
+          <ChevronLeftIcon className="size-5" strokeWidth={2.25} />
         </Button>
       ) : null}
 
       {activeConversation ? (
         <>
-          <AvatarWithOnlineIndicator isOnline={activeConversation.peer.isOnline ?? true}>
-            <Avatar className="size-9 shrink-0">
+          <AvatarWithOnlineIndicator
+            isOnline={activeConversation.peer.isOnline ?? true}
+          >
+            <Avatar className="size-10 shrink-0 sm:size-9">
               <Avatar.Image
                 alt={activeConversation.peer.name}
                 src={activeConversation.peer.avatarUrl}
@@ -46,11 +50,11 @@ export function ChatHeader() {
             </Avatar>
           </AvatarWithOnlineIndicator>
 
-          <div className="flex-1 text-center sm:text-left">
+          <div className="min-w-0 flex-1 text-left">
             <p className="truncate text-[15px] font-semibold leading-tight">
               {activeConversation.peer.name}
             </p>
-            <p className="truncate text-xs text-muted">
+            <p className="truncate text-[11px] text-muted">
               {activeConversation.peer.isOnline ? (
                 <span className="font-medium text-success">Online</span>
               ) : (
@@ -60,16 +64,18 @@ export function ChatHeader() {
           </div>
         </>
       ) : (
-        <div className="flex flex-1 items-center gap-2.5 sm:text-left">
-          <AppLogo size={36} className="rounded-[9px]" />
-          <div className="flex-1 text-center sm:text-left">
-            <p className="truncate text-[13px] font-medium text-muted">Select a conversation</p>
+        <div className="flex flex-1 items-center gap-2.5">
+          <AppLogo size={32} className="rounded-[9px]" />
+          <div className="min-w-0 flex-1 text-left">
+            <p className="truncate text-[13px] font-medium text-muted">
+              Select a conversation
+            </p>
           </div>
         </div>
       )}
 
-      <div className="ml-auto flex max-w-full shrink-0 flex-wrap items-center justify-end gap-0.5 sm:gap-1">
-        <div className="hidden min-[400px]:contents">
+      <div className="ml-auto flex shrink-0 items-center justify-end gap-1 sm:gap-1.5">
+        <div className="hidden sm:flex sm:items-center sm:gap-1.5">
           <WallpaperPicker />
           <ThemePresetPicker />
         </div>
@@ -80,14 +86,14 @@ export function ChatHeader() {
           variant="ghost"
           size="sm"
           isIconOnly
-          className="shrink-0"
+          className="shrink-0 rounded-full touch-manipulation"
           aria-pressed={isSoundEnabled}
           onPress={() => setSoundEnabled(!isSoundEnabled)}
         >
           {isSoundEnabled ? (
-            <Volume2Icon className="size-5.5" strokeWidth={2} aria-hidden />
+            <Volume2Icon className="size-5" strokeWidth={2} aria-hidden />
           ) : (
-            <VolumeXIcon className="size-5.5" strokeWidth={2} aria-hidden />
+            <VolumeXIcon className="size-5" strokeWidth={2} aria-hidden />
           )}
         </Button>
 
@@ -96,11 +102,11 @@ export function ChatHeader() {
             variant="ghost"
             size="sm"
             isIconOnly
-            className="shrink-0"
+            className="shrink-0 rounded-full touch-manipulation"
             aria-label="Close chat"
             onPress={() => setActiveConversationId(null)}
           >
-            <XIcon className="size-5.5" strokeWidth={2} aria-hidden />
+            <XIcon className="size-5" strokeWidth={2} aria-hidden />
           </Button>
         ) : null}
       </div>

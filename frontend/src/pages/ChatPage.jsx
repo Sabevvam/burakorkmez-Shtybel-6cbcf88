@@ -13,10 +13,15 @@ function ChatPage() {
   const getConversations = useChatStore((state) => state.getConversations);
   const getMessages = useChatStore((state) => state.getMessages);
   const getUsers = useChatStore((state) => state.getUsers);
-  const subscribeToMessages = useChatStore((state) => state.subscribeToMessages);
-  const unsubscribeFromMessages = useChatStore((state) => state.unsubscribeFromMessages);
+  const subscribeToMessages = useChatStore(
+    (state) => state.subscribeToMessages,
+  );
+  const unsubscribeFromMessages = useChatStore(
+    (state) => state.unsubscribeFromMessages,
+  );
 
-  const { activeConversation, activeConversationId, isLargeScreen } = useSelectedConversation();
+  const { activeConversation, activeConversationId, isLargeScreen } =
+    useSelectedConversation();
 
   useEffect(() => {
     getUsers();
@@ -31,11 +36,19 @@ function ChatPage() {
 
     // cleanup
     return () => unsubscribeFromMessages();
-  }, [getMessages, activeConversationId, subscribeToMessages, unsubscribeFromMessages]);
+  }, [
+    getMessages,
+    activeConversationId,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden p-2 sm:p-3 md:p-8" style={frameStyle}>
-      <div className="mx-auto flex w-full max-w-6xl flex-1 overflow-hidden rounded-2xl border border-border bg-background text-foreground">
+    <div
+      className="flex h-dvh flex-col overflow-hidden bg-slate-950/50 p-0 sm:p-3 md:p-6"
+      style={frameStyle}
+    >
+      <div className="mx-auto flex w-full max-w-6xl flex-1 overflow-hidden rounded-[28px] border border-white/10 bg-background/85 text-foreground shadow-2xl shadow-black/20 backdrop-blur-sm">
         <ChatSidebar />
 
         <div

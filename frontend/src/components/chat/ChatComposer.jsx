@@ -151,7 +151,7 @@ export function ChatComposer() {
   };
 
   return (
-    <footer className="shrink-0 border-t border-border px-1.5 pb-2 pt-2 sm:px-2">
+    <footer className="shrink-0 border-t border-border bg-background/90 px-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-2 sm:px-3">
       {isSendingMedia ? (
         <div className="mx-auto mb-2 flex max-w-full items-center gap-2 rounded-xl border border-border bg-surface px-3 py-2 text-sm text-muted">
           <LoaderIcon
@@ -171,7 +171,7 @@ export function ChatComposer() {
           </span>
         </div>
       ) : null}
-      <div className="mx-auto flex w-full max-w-full items-end gap-1.5 px-0.5 sm:gap-2 sm:px-1">
+      <div className="mx-auto flex w-full max-w-full items-end gap-1.5 sm:gap-2">
         <input
           ref={mediaInputRef}
           type="file"
@@ -186,23 +186,23 @@ export function ChatComposer() {
           variant="ghost"
           isIconOnly
           isDisabled={isSendingMedia}
-          className="size-9 shrink-0 touch-manipulation self-end text-accent"
+          className="size-10 shrink-0 rounded-full touch-manipulation self-end text-accent"
           onPress={() => mediaInputRef.current?.click()}
         >
-          <ImageIcon className="size-5 sm:size-6" strokeWidth={2} />
+          <ImageIcon className="size-5" strokeWidth={2} />
         </Button>
         <Button
           variant={isRecording ? "primary" : "ghost"}
           isIconOnly
           isDisabled={isSendingMedia}
-          className="size-9 shrink-0 touch-manipulation self-end text-accent"
+          className="size-10 shrink-0 rounded-full touch-manipulation self-end text-accent"
           onPress={isRecording ? stopRecording : startRecording}
           aria-label={isRecording ? "Stop recording" : "Record voice message"}
         >
           {isRecording ? (
             <SquareIcon className="size-4 fill-current" strokeWidth={2} />
           ) : (
-            <MicIcon className="size-5 sm:size-6" strokeWidth={2} />
+            <MicIcon className="size-5" strokeWidth={2} />
           )}
         </Button>
         <TextArea
@@ -218,13 +218,14 @@ export function ChatComposer() {
               handleSend();
             }
           }}
-          className="flex-1 rounded-full"
+          className="flex-1 rounded-2xl border-0 bg-surface/60 text-base"
         />
 
         <Button
           variant="primary"
           isIconOnly
           isDisabled={!composerText.trim()}
+          className="size-10 shrink-0 rounded-full touch-manipulation"
           onPress={handleSend}
         >
           <SendHorizontalIcon className="size-5" />
