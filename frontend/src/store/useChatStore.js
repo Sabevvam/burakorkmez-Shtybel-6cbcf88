@@ -162,6 +162,32 @@ export const useChatStore = create(
       setComposerText: (composerText) => set({ composerText }),
       setSoundEnabled: (isSoundEnabled) => set({ isSoundEnabled }),
 
+      createGroupConversation: ({
+        name,
+        imageUrl = "",
+        selectedUserIds = [],
+      }) => {
+        const trimmedName = (name || "New Group").trim() || "New Group";
+        const nextGroup = {
+          _id: `group-${Date.now()}`,
+          fullName: trimmedName,
+          profilePic: imageUrl,
+          email: `${trimmedName.toLowerCase().replace(/\s+/g, "-")}@group.local`,
+          isGroup: true,
+          members: selectedUserIds,
+          createdAt: new Date().toISOString(),
+        };
+
+        set((state) => ({
+          conversations: [nextGroup, ...state.conversations],
+          activeConversationId: nextGroup._id,
+          selectedUser: nextGroup,
+          messages: [],
+        }));
+
+        return nextGroup;
+      },
+
       reactToMessage: (messageId, emoji) => {
         set((state) => ({
           messages: state.messages.map((message) => {
