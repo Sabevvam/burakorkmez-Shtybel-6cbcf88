@@ -7,7 +7,7 @@ import { useChatStore } from "../../store/useChatStore";
 import { APP_NAME, AppLogo } from "../AppLogo";
 import { UserButton } from "@clerk/react";
 
-import { Button, Input, SearchField, Tabs } from "@heroui/react";
+import { Button, SearchField, Tabs } from "@heroui/react";
 import { MessageSquareIcon, PlusIcon, UsersIcon } from "lucide-react";
 import { useState } from "react";
 import { ConversationRow } from "./ConversationRow";
@@ -164,17 +164,19 @@ function ChatSidebar() {
         {isCreatingGroup ? (
           <div className="shrink-0 border-b border-border bg-surface/60 p-3">
             <div className="space-y-2">
-              <Input
+              <input
+                type="text"
                 value={groupName}
-                onValueChange={setGroupName}
+                onChange={(event) => setGroupName(event.target.value)}
                 placeholder="Group name"
-                className="w-full"
+                className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted focus:border-accent"
               />
-              <Input
+              <input
+                type="text"
                 value={groupImage}
-                onValueChange={setGroupImage}
+                onChange={(event) => setGroupImage(event.target.value)}
                 placeholder="Group image URL (optional)"
-                className="w-full"
+                className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted focus:border-accent"
               />
 
               <div className="max-h-40 space-y-2 overflow-y-auto pr-1">
