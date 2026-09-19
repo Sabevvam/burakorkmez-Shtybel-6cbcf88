@@ -245,7 +245,13 @@ export const useChatStore = create(
     }),
     {
       name: "e-message-storage",
-      partialize: (state) => ({ isSoundEnabled: state.isSoundEnabled }),
+      partialize: (state) => ({
+        isSoundEnabled: state.isSoundEnabled,
+        conversations: state.conversations,
+        activeConversationId: state.activeConversationId,
+        selectedUser: state.selectedUser,
+        messages: state.messages,
+      }),
     },
   ),
 );
