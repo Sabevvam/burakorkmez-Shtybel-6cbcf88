@@ -55,6 +55,12 @@ export const useChatStore = create(
 
       getMessages: async (userId) => {
         if (!userId) return;
+
+        if (String(userId).startsWith("group-")) {
+          set({ messages: [] });
+          return;
+        }
+
         set({ isMessagesLoading: true });
         try {
           const res = await axiosInstance.get(`/messages/${userId}`);
@@ -71,6 +77,32 @@ export const useChatStore = create(
       sendMessage: async (messageData) => {
         const { selectedUser, messages } = get();
         if (!selectedUser) return false;
+
+        if (selectedUser.isGroup) {
+          const authUser = useAuthStore.getState().authUser;
+          const localMessage = {
+            _id: `group-message-${Date.now()}`,
+            senderId: authUser?._id || "me",
+            receiverId: selectedUser._id,
+            text:
+              typeof messageData === "string"
+                ? messageData
+                : messageData?.text || "",
+            image:
+              typeof messageData === "string" ? "" : messageData?.image || "",
+            gif: typeof messageData === "string" ? "" : messageData?.gif || "",
+            audio:
+              typeof messageData === "string" ? "" : messageData?.audio || "",
+            video:
+              typeof messageData === "string" ? "" : messageData?.video || "",
+            createdAt: new Date().toISOString(),
+            reactions: [],
+          };
+
+          set({ messages: [...messages, localMessage], composerText: "" });
+          get().getConversations();
+          return true;
+        }
 
         try {
           const res = await axiosInstance.post(

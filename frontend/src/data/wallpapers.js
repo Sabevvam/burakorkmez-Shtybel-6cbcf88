@@ -82,6 +82,18 @@ export const WALLPAPERS = [
     label: "Ventura Dark",
     url: "/wallpapers/ventura-dark.jpg",
   },
+  {
+    id: "baza",
+    category: "abstract",
+    label: "Baza",
+    url: "/wallpapers/baza.webp",
+  },
+  {
+    id: "nabu-sbu",
+    category: "abstract",
+    label: "Nabu Sbu",
+    url: "/wallpapers/nabu_sbu.jpg",
+  },
 ];
 
 export function frameStyleFromUrl(url) {
