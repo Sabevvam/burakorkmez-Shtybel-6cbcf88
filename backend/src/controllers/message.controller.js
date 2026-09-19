@@ -94,6 +94,7 @@ export async function sendMessage(req, res) {
 
     let imageUrl;
     let gifUrl;
+    let audioUrl;
     let videoUrl;
 
     if (req.file) {
@@ -106,6 +107,8 @@ export async function sendMessage(req, res) {
       const url = await uploadChatMedia(req.file);
       if (req.file.mimetype === "image/gif") {
         gifUrl = url;
+      } else if (req.file.mimetype.startsWith("audio/")) {
+        audioUrl = url;
       } else if (req.file.mimetype.startsWith("video/")) {
         videoUrl = url;
       } else {
@@ -119,6 +122,7 @@ export async function sendMessage(req, res) {
       text,
       image: imageUrl,
       gif: gifUrl,
+      audio: audioUrl,
       video: videoUrl,
     });
 

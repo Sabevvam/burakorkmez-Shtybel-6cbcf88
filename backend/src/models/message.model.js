@@ -21,6 +21,9 @@ const messageSchema = new mongoose.Schema(
     gif: {
       type: String,
     },
+    audio: {
+      type: String,
+    },
     video: {
       type: String,
     },

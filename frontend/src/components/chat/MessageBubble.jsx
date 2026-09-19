@@ -8,6 +8,7 @@ export function MessageBubble({ message }) {
   const isOwnMessage = message.role === "me";
   const hasImage = Boolean(message.imageUrl);
   const hasGif = Boolean(message.gifUrl);
+  const hasAudio = Boolean(message.audioUrl);
   const hasVideo = Boolean(message.videoUrl);
 
   return (
@@ -33,6 +34,13 @@ export function MessageBubble({ message }) {
             src={message.gifUrl}
             alt=""
             className="mb-1.5 max-h-40 max-w-full rounded-lg object-cover sm:max-h-52 sm:rounded-xl"
+          />
+        ) : null}
+        {hasAudio ? (
+          <audio
+            controls
+            src={message.audioUrl}
+            className="mb-1.5 w-full max-w-64"
           />
         ) : null}
         {hasVideo ? <MessageVideo src={message.videoUrl} /> : null}
